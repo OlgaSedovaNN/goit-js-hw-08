@@ -8,33 +8,58 @@ const refs = {
 }
 
 let formData = {}
-const formInLS = localStorage.getItem("feedback-form-state")
-const parsingFormData = JSON.parse(formInLS)
+let parsedFormInLS = JSON.parse(localStorage.getItem("feedback-form-state"));
 
 refs.form.addEventListener('input', throttle(fillLocalStorage, 500))
 
 function fillLocalStorage(e) {
- 
-    if (formInLS) {
-        formData = parsingFormData;
-    } 
+
     formData[e.target.name] = e.target.value
     localStorage.setItem("feedback-form-state", JSON.stringify(formData));
-    
+
+}
+if (parsedFormInLS) {
+ parsedFormInLS.email ? refs.input.value = parsedFormInLS.email : refs.input.value = '' 
+
+ parsedFormInLS.message?refs.textarea.value = parsedFormInLS.message : refs.textarea.value = ''
 }
 
-if (formInLS) {
-    if (parsingFormData.email) { refs.input.value = parsingFormData.email }
-    if (parsingFormData.message) { refs.textarea.value = parsingFormData.message }
-    } 
 
-refs.form.addEventListener('submit', onFormSubmit);
+refs.form.addEventListener('submit', onFormSubmit)
 
 function onFormSubmit(evt) {
-    evt.preventDefault();
-    if (formInLS) {
-        localStorage.removeItem("feedback-form-state")
-    }
+    evt.preventDefault()
+    console.log(parsedFormInLS)
+    localStorage.removeItem("feedback-form-state")
     evt.currentTarget.reset();
-    console.log(parsingFormData)
+    // parsedFormInLS = {};
 }
+// const formInLS = localStorage.getItem("feedback-form-state")
+// const parsingFormData = JSON.parse(formInLS)
+
+// refs.form.addEventListener('input', throttle(fillLocalStorage, 500))
+
+// function fillLocalStorage(e) {
+ 
+//     if (formInLS) {
+//         formData = parsingFormData;
+//     } 
+//     formData[e.target.name] = e.target.value
+//     localStorage.setItem("feedback-form-state", JSON.stringify(formData));
+    
+// }
+
+// if (formInLS) {
+//     if (parsingFormData.email) { refs.input.value = parsingFormData.email }
+//     if (parsingFormData.message) { refs.textarea.value = parsingFormData.message }
+//     } 
+
+// refs.form.addEventListener('submit', onFormSubmit);
+
+// function onFormSubmit(evt) {
+//     console.log(parsingFormData)
+//     evt.preventDefault();
+//     localStorage.removeItem("feedback-form-state")
+//     evt.currentTarget.reset();
+    
+// }
